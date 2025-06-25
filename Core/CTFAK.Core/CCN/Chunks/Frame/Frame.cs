@@ -1,15 +1,15 @@
 ﻿using CTFAK.CCN.Chunks.Objects;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using static CTFAK.CCN.Chunks.Objects.ObjectInfo;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.CCN.Chunks.Frame
 {
@@ -74,7 +74,7 @@ namespace CTFAK.CCN.Chunks.Frame
         public string name;
         public int width;
         public int height;
-        public Color background;
+        public Rgba32 background;
         public Events events;
         public BitDict flags = new BitDict(new string[]
         {
@@ -101,7 +101,7 @@ namespace CTFAK.CCN.Chunks.Frame
         });
         public List<ObjectInstance> objects = new();
         public Layers layers;
-        public List<Color> palette;
+        public List<Rgba32> palette;
         public Transition fadeIn;
         public Transition fadeOut;
         public VirtualRect virtualRect;
@@ -110,7 +110,7 @@ namespace CTFAK.CCN.Chunks.Frame
         public int InkEffectValue;
         public short Effect;
         public short EffectParam;
-        public Color RGBCoeff;
+        public Rgba32 RGBCoeff;
         public byte blend;
         public int randomSeed;
         public int movementTimer = 60;
@@ -411,7 +411,7 @@ namespace CTFAK.CCN.Chunks.Frame
         public int InkEffectValue;
         public short Effect;
         public short EffectParam;
-        public Color RGBCoeff;
+        public Rgba32 RGBCoeff;
         public byte blend;
 
         public override void Read(ByteReader reader)
@@ -446,11 +446,11 @@ namespace CTFAK.CCN.Chunks.Frame
 
     public class FramePalette : ChunkLoader
     {
-        public List<Color> Items;
+        public List<Rgba32> Items;
 
         public override void Read(ByteReader reader)
         {
-            Items = new List<Color>();
+            Items = new List<Rgba32>();
             for (int i = 0; i < 257; i++)
             {
                 Items.Add(reader.ReadColor());
@@ -459,7 +459,7 @@ namespace CTFAK.CCN.Chunks.Frame
 
         public override void Write(ByteWriter Writer)
         {
-            foreach (Color item in Items)
+            foreach (Rgba32 item in Items)
             {
                 Writer.WriteColor(item);
             }

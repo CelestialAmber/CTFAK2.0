@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.CCN.Chunks.Banks
 {

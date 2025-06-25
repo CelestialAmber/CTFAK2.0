@@ -1,5 +1,5 @@
 ﻿using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 
 namespace CTFAK.MMFParser.EXE.Loaders.Events.Parameters

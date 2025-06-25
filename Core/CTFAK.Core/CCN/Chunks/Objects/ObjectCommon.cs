@@ -1,15 +1,15 @@
 ﻿using CTFAK.Core.CCN.Chunks.Objects;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static CTFAK.CCN.Constants;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.CCN.Chunks.Objects
 {
@@ -82,7 +82,7 @@ namespace CTFAK.CCN.Chunks.Objects
             }
         );
 
-        public Color BackColor;
+        public Rgba32 BackColor;
         public ObjectInfo Parent;
         public Counters Counters;
         public SubApplication SubApplication;

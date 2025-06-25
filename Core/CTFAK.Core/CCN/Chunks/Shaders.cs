@@ -3,7 +3,6 @@ using System.IO;
 using CTFAK.CCN.Chunks;
 using CTFAK.Core.Utils;
 using CTFAK.Memory;
-using CTFAK.Utils;
 
 namespace CTFAK.MMFParser.EXE.Loaders
 {

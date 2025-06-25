@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using CTFAK.CCN.Chunks;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.MFA
 {
@@ -13,7 +13,7 @@ namespace CTFAK.MFA
         public string Name = "ERROR";
         public int SizeX;
         public int SizeY;
-        public Color Background;
+        public Rgba32 Background;
         public int MaxObjects;
         public List<MFAObjectInfo> Items = new List<MFAObjectInfo>();
         public int Handle;
@@ -43,7 +43,7 @@ namespace CTFAK.MFA
 
         public string Password;
         public string UnkString = "";
-        public List<Color> Palette=new Color[256].ToList();
+        public List<Rgba32> Palette=new Rgba32[256].ToList();
         public int StampHandle;
         public int ActiveLayer;
         public List<MFALayer> Layers = new List<MFALayer>();
@@ -152,7 +152,7 @@ namespace CTFAK.MFA
             LastViewedY = reader.ReadInt32();
 
             PaletteSize = reader.ReadInt32();
-            Palette = new List<Color>();
+            Palette = new List<Rgba32>();
             for (int i = 0; i < 256; i++)
             {
                 Palette.Add(reader.ReadColor());

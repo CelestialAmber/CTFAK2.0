@@ -2,9 +2,8 @@
 using CTFAK.Core.CCN.Chunks.Banks.SoundBank;
 using CTFAK.FileReaders;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 
@@ -39,14 +38,14 @@ namespace CTFAK.FileReaders
                     else if (entry.FullName == "res/drawable-xhdpi/launcher.png")
                     {
                         Bitmap icon = new Bitmap(entry.Open());
-                        androidIcons[16]  = icon.ResizeImage(16);
+                        androidIcons[16]  = icon.ResizeImage(16, 16);
                         androidIcons[17]  = androidIcons[16];
-                        androidIcons[32]  = icon.ResizeImage(32);
+                        androidIcons[32]  = icon.ResizeImage(32, 32);
                         androidIcons[33]  = androidIcons[32];
-                        androidIcons[48]  = icon.ResizeImage(48);
+                        androidIcons[48]  = icon.ResizeImage(48, 48);
                         androidIcons[49]  = androidIcons[48];
-                        androidIcons[128] = icon.ResizeImage(128);
-                        androidIcons[256] = icon.ResizeImage(256);
+                        androidIcons[128] = icon.ResizeImage(128, 128);
+                        androidIcons[256] = icon.ResizeImage(256, 256);
                     }
                 }
             }

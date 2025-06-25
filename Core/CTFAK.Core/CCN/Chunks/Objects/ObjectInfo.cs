@@ -1,12 +1,13 @@
 ﻿using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
 
 namespace CTFAK.CCN.Chunks.Objects
 {
@@ -20,7 +21,7 @@ namespace CTFAK.CCN.Chunks.Objects
         public int Reserved;
         public int InkEffect;
         public int InkEffectValue;
-        public Color rgbCoeff;
+        public Rgba32 rgbCoeff;
         public byte blend;
 
         public ShaderData shaderData = new();
@@ -71,7 +72,7 @@ namespace CTFAK.CCN.Chunks.Objects
                             var r = chunkReader.ReadByte();
                             var g = chunkReader.ReadByte();
                             var b = chunkReader.ReadByte();
-                            rgbCoeff = Color.FromArgb(0, b, g, r);
+                            rgbCoeff = new Rgba32(b, g, r, 0);
                             blend = chunkReader.ReadByte();
                         }
                         else

@@ -1,11 +1,10 @@
 ﻿using CTFAK.CCN.Chunks;
 using CTFAK.Core.Utils;
 using CTFAK.Memory;
-using CTFAK.Utils;
 using K4os.Compression.LZ4;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -76,10 +75,6 @@ namespace CTFAK.Core.CCN.Chunks.Banks.ImageBank
                 if (realBitmap == null)
                 {
                     realBitmap = new Bitmap(Width, Height);
-                    var bmpData = realBitmap.LockBits(new Rectangle(0, 0, Width, Height),
-                                                      ImageLockMode.WriteOnly, 
-                                                      PixelFormat.Format32bppArgb);
-
 
                     byte[] colorArray = null;
 
@@ -124,9 +119,8 @@ namespace CTFAK.Core.CCN.Chunks.Banks.ImageBank
                     }
                     if (colorArray == null)
                         Logger.LogWarning("colorArray is null for image mode " + GraphicMode);
-                    Marshal.Copy(colorArray, 0, bmpData.Scan0, colorArray.Length);
 
-                    realBitmap.UnlockBits(bmpData);
+                    realBitmap.CopyColorDataFromArray(colorArray);
                 }
 
                 return realBitmap;
@@ -136,76 +130,7 @@ namespace CTFAK.Core.CCN.Chunks.Banks.ImageBank
 
         public void FromBitmap(Bitmap bmp)
         {
-            Width = bmp.Width;
-            Height = bmp.Height;
-            if (CTFAKCore.parameters.Contains("-noalpha"))
-                Flags["Alpha"] = false;
-            GraphicMode = 4;
-
-            var bitmapData = bmp.LockBits(new Rectangle(0, 0,
-                    bmp.Width,
-                    bmp.Height),
-                ImageLockMode.ReadOnly,
-                PixelFormat.Format24bppRgb);
-            var copyPad = ImageHelper.GetPadding(Width, 4);
-            var length = bitmapData.Height * bitmapData.Stride + copyPad * 4;
-
-            var bytes = new byte[length];
-            var stride = bitmapData.Stride;
-            // Copy bitmap to byte[]
-            Marshal.Copy(bitmapData.Scan0, bytes, 0, length);
-            bmp.UnlockBits(bitmapData);
-
-            imageData = new byte[Width * Height * 6];
-            var position = 0;
-            var pad = ImageHelper.GetPadding(Width, 3);
-
-            for (var y = 0; y < Height; y++)
-            {
-                for (var x = 0; x < Width; x++)
-                {
-                    var newPos = y * stride + x * 3;
-                    imageData[position] = bytes[newPos];
-                    imageData[position + 1] = bytes[newPos + 1];
-                    imageData[position + 2] = bytes[newPos + 2];
-                    position += 3;
-                }
-
-                position += 3 * pad;
-            }
-
-            try
-            {
-                var bitmapDataAlpha = bmp.LockBits(new Rectangle(0, 0,
-                        bmp.Width,
-                        bmp.Height),
-                    ImageLockMode.ReadOnly,
-                    PixelFormat.Format32bppArgb);
-                var copyPadAlpha = ImageHelper.GetPadding(Width, 1);
-                var lengthAlpha = bitmapDataAlpha.Height * bitmapDataAlpha.Stride + copyPadAlpha * 4;
-
-                var bytesAlpha = new byte[lengthAlpha];
-                var strideAlpha = bitmapDataAlpha.Stride;
-                // Copy bitmap to byte[]
-                Marshal.Copy(bitmapDataAlpha.Scan0, bytesAlpha, 0, lengthAlpha);
-                bmp.UnlockBits(bitmapDataAlpha);
-
-                var aPad = ImageHelper.GetPadding(Width, 1, 4);
-                var alphaPos = position;
-                for (var y = 0; y < Height; y++)
-                {
-                    for (var x = 0; x < Width; x++)
-                    {
-                        imageData[alphaPos] = bytesAlpha[y * strideAlpha + x * 4 + 3];
-                        alphaPos += 1;
-                    }
-
-                    alphaPos += aPad;
-                }
-            }
-            catch
-            {
-            } /*(Exception ex){Console.WriteLine(ex);}*/
+            realBitmap = bmp.Clone();
         }
 
         public override void Read(ByteReader reader)

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using CTFAK.FileReaders;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using Joveler.Compression.ZLib;
+using System.Runtime.InteropServices;
 
 namespace CTFAK
 {
@@ -24,11 +25,52 @@ namespace CTFAK
 
 
             };
-            ZLibInit.GlobalInit("x64\\zlibwapi.dll");
 
-            String libraryFile = Path.Combine(Path.GetDirectoryName(typeof(CTFAKCore).Assembly.Location), "x64",
-                "CTFAK-Native.dll");
-            NativeLib.LoadLibrary(libraryFile);
+            InitZLibLibrary();
+
+        }
+
+        public static void InitZLibLibrary()
+        {
+            string libDir = "runtimes";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                libDir = Path.Combine(libDir, "win-");
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                libDir = Path.Combine(libDir, "linux-");
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                libDir = Path.Combine(libDir, "osx-");
+
+            switch (RuntimeInformation.ProcessArchitecture)
+            {
+                case Architecture.X86:
+                    libDir += "x86";
+                    break;
+                case Architecture.X64:
+                    libDir += "x64";
+                    break;
+                case Architecture.Arm:
+                    libDir += "arm";
+                    break;
+                case Architecture.Arm64:
+                    libDir += "arm64";
+                    break;
+            }
+            libDir = Path.Combine(libDir, "native");
+
+            string libPath = null;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                libPath = Path.Combine(libDir, "zlib1.dll");
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                libPath = Path.Combine(libDir, "libz.so");
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                libPath = Path.Combine(libDir, "libz.dylib");
+
+            if (libPath == null)
+                throw new PlatformNotSupportedException($"Unable to find native library.");
+            if (!File.Exists(libPath))
+                throw new PlatformNotSupportedException($"Unable to find native library [{libPath}].");
+
+            ZLibInit.GlobalInit(libPath, new ZLibInitOptions());
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using CTFAK.CCN;
 using CTFAK.Core.MFA;
 using CTFAK.FileReaders;
 using CTFAK.Memory;
 using CTFAK.MFA;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.EXE
 {

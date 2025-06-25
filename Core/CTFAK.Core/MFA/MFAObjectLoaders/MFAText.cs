@@ -1,9 +1,9 @@
 ﻿using CTFAK.CCN.Chunks;
 using CTFAK.Memory;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ namespace CTFAK.MFA.MFAObjectLoaders
         public uint Width;
         public uint Height;
         public uint Font;
-        public Color Color;
+        public Rgba32 Color;
         public uint Flags;
         public override void Read(ByteReader reader)
         {

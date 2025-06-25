@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Text;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.Memory
 {
@@ -104,14 +104,14 @@ namespace CTFAK.Memory
                 return ReadAscii(len);
         }
 
-        public Color ReadColor()
+        public Rgba32 ReadColor()
         {
             var r = ReadByte();
             var g = ReadByte();
             var b = ReadByte();
             var a = ReadByte();
 
-            return Color.FromArgb(a, r, g, b);
+            return new Rgba32(r, g, b, a);
         }
 
         public override byte[] ReadBytes(int count = -1)

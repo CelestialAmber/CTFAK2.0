@@ -1,8 +1,8 @@
 ﻿#define USE_IONIC
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using CTFAK.Utils;
 using Ionic.Zlib;
 using Joveler.Compression.ZLib;
 
@@ -59,15 +59,19 @@ namespace CTFAK.Memory
 
         public static byte[] DecompressOldBlock(byte[] buff, int size, int decompSize, out int actual_size)
         {
-            var originalBuff = Marshal.AllocHGlobal(size);
-            Marshal.Copy(buff, 0, originalBuff, buff.Length);
-            var outputBuff = Marshal.AllocHGlobal(decompSize);
-            actual_size = NativeLib.decompressOld(originalBuff, size, outputBuff, decompSize);
-            Marshal.FreeHGlobal(originalBuff);
-            var data = new byte[decompSize];
-            Marshal.Copy(outputBuff, data, 0, decompSize);
-            Marshal.FreeHGlobal(outputBuff);
-            return data;
+            byte[] originalBuff = buff;
+            byte[] outputBuff = new byte[decompSize];
+            actual_size = decompressOld(buff, ref outputBuff);
+            return outputBuff;
+        }
+
+        public static int decompressOld(byte[] source, ref byte[] output)
+        {
+            MemoryStream compressedStream = new MemoryStream(source);
+            MemoryStream decompressedStream = new MemoryStream(output);
+            System.IO.Compression.DeflateStream deflateStream = new System.IO.Compression.DeflateStream(compressedStream, System.IO.Compression.CompressionMode.Decompress);
+            deflateStream.CopyTo(decompressedStream);
+            return (int)decompressedStream.Length;
         }
 
         public static byte[] CompressBlock(byte[] data)

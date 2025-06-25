@@ -1,10 +1,10 @@
-﻿using System.Drawing.Imaging;
-using System.Drawing;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System.Runtime.InteropServices;
 using System;
 using CTFAK.Core.CCN.Chunks.Banks.ImageBank;
 using System.IO;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.Core.Utils
 {
@@ -20,7 +20,7 @@ namespace CTFAK.Core.Utils
             return (int)Math.Ceiling(pad / (float)pointSize);
         }
 
-        public static byte[] Normal24BitMaskedToRGBA(byte[] imageData, int width, int height, bool alpha, Color transparent, bool flipRGB = false)
+        public static byte[] Normal24BitMaskedToRGBA(byte[] imageData, int width, int height, bool alpha, Rgba32 transparent, bool flipRGB = false)
         {
             byte[] colorArray = new byte[width * height * 4];
             int stride = width * 4;
@@ -74,7 +74,7 @@ namespace CTFAK.Core.Utils
 
             return colorArray;
         }
-        public static byte[] Normal16BitToRGBA(byte[] imageData, int width, int height, bool alpha, Color transparent)
+        public static byte[] Normal16BitToRGBA(byte[] imageData, int width, int height, bool alpha, Rgba32 transparent)
         {
             byte[] colorArray = new byte[width * height * 4];
             int stride = width * 4;
@@ -126,7 +126,7 @@ namespace CTFAK.Core.Utils
 
             return colorArray;
         }
-        public static byte[] Normal15BitToRGBA(byte[] imageData, int width, int height, bool alpha, Color transparent)
+        public static byte[] Normal15BitToRGBA(byte[] imageData, int width, int height, bool alpha, Rgba32 transparent)
         {
             byte[] colorArray = new byte[width * height * 4];
             int stride = width * 4;
@@ -182,7 +182,7 @@ namespace CTFAK.Core.Utils
         public static byte[] Normal8BitToRGBA(byte[] imageData, int width, int height, bool alpha)
         {
             var newImg = new FusionImage();
-            newImg.FromBitmap((Bitmap)Bitmap.FromStream(new MemoryStream(imageData)));
+            newImg.FromBitmap(Bitmap.FromStream(new MemoryStream(imageData)));
             return newImg.imageData;
         }
         public static byte[] AndroidMode0ToRGBA(byte[] imageData, int width, int height, bool alpha)
@@ -340,10 +340,10 @@ namespace CTFAK.Core.Utils
         public static byte[] AndroidMode5ToRGBA(byte[] imageData, int width, int height, bool alpha)
         {
             var img = new FusionImage();
-            img.FromBitmap((Bitmap)Bitmap.FromStream(new MemoryStream(imageData)));
+            img.FromBitmap(Bitmap.FromStream(new MemoryStream(imageData)));
             return Normal24BitMaskedToRGBA(img.imageData, width, height, true, Color.Black);
         }
-        public static byte[] TwoFivePlusToRGBA(byte[] imageData, int width, int height, bool alpha, Color transparent, bool RGBA, bool flipRGB = false)
+        public static byte[] TwoFivePlusToRGBA(byte[] imageData, int width, int height, bool alpha, Rgba32 transparent, bool RGBA, bool flipRGB = false)
         {
             //Logger.Log("TwoFivePlusToRGBA, Image Data Size: " + imageData.Length + ", Size: " + width + "x" + height + ", Alpha: " + alpha + ", Transparent Color: " + transparent + ", RGBA: " + RGBA + ", Flip RGB: " + flipRGB);
             byte[] colorArray = new byte[width * height * 4];
@@ -404,7 +404,7 @@ namespace CTFAK.Core.Utils
             return colorArray;
         }
         public static byte[] RGBAToRGBMasked(byte[] imageData, int width, int height, bool alpha, bool RGBA = false) => RGBAToRGBMasked(imageData, width, height, alpha, Color.Black, RGBA);
-        public static byte[] RGBAToRGBMasked(byte[] imageData, int width, int height, bool alpha, Color transparent, bool RGBA = false)
+        public static byte[] RGBAToRGBMasked(byte[] imageData, int width, int height, bool alpha, Rgba32 transparent, bool RGBA = false)
         {
             //Logger.Log("RGBAToRGBMasked, Image Data Size: " + imageData.Length + ", Size: " + width + "x" + height + ", Alpha: " + alpha + ", Transparent Color: " + transparent + ", RGBA: " + RGBA);
             byte[] colorArray = new byte[width * height * 8];

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CTFAK.Utils
+namespace CTFAK.Core.Utils
 {
     public class Settings
     {

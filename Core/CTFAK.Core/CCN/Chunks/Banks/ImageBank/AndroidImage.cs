@@ -1,5 +1,5 @@
 ﻿using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.Core.CCN.Chunks.Banks.ImageBank
 {

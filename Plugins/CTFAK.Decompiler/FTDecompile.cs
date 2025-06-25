@@ -6,10 +6,9 @@ using CTFAK.FileReaders;
 using CTFAK.Memory;
 using CTFAK.MFA;
 using CTFAK.MFA.MFAObjectLoaders;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,12 +19,13 @@ using Action = CTFAK.CCN.Chunks.Frame.Action;
 using Constants = CTFAK.CCN.Constants;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using CTFAK.Core.Properties;
 using CTFAK.Core.CCN.Chunks.Banks;
 using CTFAK.MMFParser.EXE.Loaders.Events.Parameters;
 using static System.Collections.Specialized.BitVector32;
 using CTFAK.Core.CCN.Chunks.Banks.ImageBank;
 using CTFAK.Core.MFA.MFAObjectLoaders;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.Tools
 {
@@ -108,39 +108,39 @@ namespace CTFAK.Tools
                             break;
                         case 1:
                             if (reader.getIcons().Count == 0 && game.Icon != null)
-                                item.Value.FromBitmap(game.Icon.ResizeImage(32));
+                                item.Value.FromBitmap(game.Icon.ResizeImage(32, 32));
                             else
                                 item.Value.FromBitmap(reader.getIcons()[32]);
                             break;
                         case 4:
                         case 7:
                             if (reader.getIcons().Count == 0 && game.Icon != null)
-                                item.Value.FromBitmap(game.Icon.ResizeImage(32));
+                                item.Value.FromBitmap(game.Icon.ResizeImage(32, 32));
                             else
                                 item.Value.FromBitmap(reader.getIcons()[33]);
                             break;
                         case 0:
                             if (reader.getIcons().Count == 0 && game.Icon != null)
-                                item.Value.FromBitmap(game.Icon.ResizeImage(48));
+                                item.Value.FromBitmap(game.Icon.ResizeImage(48, 48));
                             else
                                 item.Value.FromBitmap(reader.getIcons()[48]);
                             break;
                         case 3:
                         case 6:
                             if (reader.getIcons().Count == 0 && game.Icon != null)
-                                item.Value.FromBitmap(game.Icon.ResizeImage(48));
+                                item.Value.FromBitmap(game.Icon.ResizeImage(48, 48));
                             else
                                 item.Value.FromBitmap(reader.getIcons()[49]);
                             break;
                         case 9:
                             if (reader.getIcons().Count == 0 && game.Icon != null)
-                                item.Value.FromBitmap(game.Icon.ResizeImage(128));
+                                item.Value.FromBitmap(game.Icon.ResizeImage(128, 128));
                             else
                                 item.Value.FromBitmap(reader.getIcons()[128]);
                             break;
                         case 10:
                             if (reader.getIcons().Count == 0 && game.Icon != null)
-                                item.Value.FromBitmap(game.Icon.ResizeImage(256));
+                                item.Value.FromBitmap(game.Icon.ResizeImage(256, 256));
                             else
                                 item.Value.FromBitmap(reader.getIcons()[256]);
                             break;
@@ -156,7 +156,7 @@ namespace CTFAK.Tools
             var imageNull = new FusionImage();
             imageNull.Handle = 14;
             imageNull.Transparent = Color.Brown;
-            imageNull.FromBitmap((Bitmap)Resources.EmptyIcon);
+            imageNull.FromBitmap(new Bitmap(0,0));
             mfa.Icons.Items.Add(14, imageNull);
             // game.Images.Images.Clear();
 
@@ -310,7 +310,7 @@ namespace CTFAK.Tools
                 newFrame.LastViewedX = 320;
                 newFrame.LastViewedY = 240;
                 //if (frame.palette == null) continue;
-                newFrame.Palette = frame.palette ?? new List<Color>();
+                newFrame.Palette = frame.palette ?? new List<Rgba32>();
                 newFrame.StampHandle = 13;
                 newFrame.ActiveLayer = 0;
                 newFrame.Chunks.GetOrCreateChunk<FrameVirtualRect>().Left = frame.virtualRect?.left ?? 0;
@@ -350,7 +350,7 @@ namespace CTFAK.Tools
 
                         lyrShdr.InkInMyBum = layer.Effect;
                         if (!game.header.OtherFlags["Direct3D8or11"] && !game.header.OtherFlags["Direct3D9or11"])
-                            lyrShdr.RGBCoeff = Color.FromArgb(layer.RGBCoeff.A, 255 - layer.RGBCoeff.R, 255 - layer.RGBCoeff.G, 255 - layer.RGBCoeff.B);
+                            lyrShdr.RGBCoeff = new Rgba32(255 - layer.RGBCoeff.R, 255 - layer.RGBCoeff.G, 255 - layer.RGBCoeff.B, layer.RGBCoeff.A);
                         else
                             lyrShdr.RGBCoeff = layer.RGBCoeff;
 
@@ -378,9 +378,9 @@ namespace CTFAK.Tools
                 shdrData.Shaders = new();
                 shdrData.Effect = frame.Effect;
                 if (!game.header.OtherFlags["Direct3D8or11"] && !game.header.OtherFlags["Direct3D9or11"])
-                    shdrData.RGBCoeff = Color.FromArgb(frame.RGBCoeff.A, 255 - frame.RGBCoeff.R, 255 - frame.RGBCoeff.G, 255 - frame.RGBCoeff.B);
+                    shdrData.RGBCoeff = new Rgba32(255 - frame.RGBCoeff.R, 255 - frame.RGBCoeff.G, 255 - frame.RGBCoeff.B, frame.RGBCoeff.A);
                 else
-                    shdrData.RGBCoeff = Color.FromArgb(frame.RGBCoeff.A, frame.RGBCoeff.R, frame.RGBCoeff.G, frame.RGBCoeff.B);
+                    shdrData.RGBCoeff = new Rgba32(frame.RGBCoeff.R, frame.RGBCoeff.G, frame.RGBCoeff.B, frame.RGBCoeff.A);
 
                 if (frame.shaderData.hasShader)
                 {
@@ -643,6 +643,9 @@ namespace CTFAK.Tools
                 int type = 2;
                 bool noicon = false;
                 Bitmap iconBmp = null;
+
+                //TODO: replace resource system
+                /*
                 if (newItem.ObjectType >= 32)
                 {
                     CTFAK.CCN.Chunks.Extension ext = null;
@@ -651,6 +654,7 @@ namespace CTFAK.Tools
                     {
                         if (testExt.Handle == (int)item.ObjectType - 32) ext = testExt;
                     }
+
                     switch (ext.Name)
                     {
                         case "KcBoxA":
@@ -775,10 +779,10 @@ namespace CTFAK.Tools
                             try
                             {
                                 Bitmap bmp = game.Images.Items[((Backdrop)item.properties).Image].bitmap;
-                                if (bmp.Width > bmp.Height)
-                                    iconBmp = bmp.ResizeImage(new Size(32, (int)Math.Round((float)bmp.Height / bmp.Width * 32.0)));
+                                if (bmp.width > bmp.height)
+                                    iconBmp = bmp.ResizeImage(32, (int)Math.Round((float)bmp.height / bmp.width * 32.0));
                                 else
-                                    iconBmp = bmp.ResizeImage(new Size((int)Math.Round((float)bmp.Width / bmp.Height * 32.0), 32));
+                                    iconBmp = bmp.ResizeImage((int)Math.Round((float)bmp.width / bmp.height * 32.0), 32);
                             }
                             catch
                             {
@@ -789,10 +793,10 @@ namespace CTFAK.Tools
                             try
                             {
                                 Bitmap bmp = game.Images.Items[((ObjectCommon)item.properties).Animations.AnimationDict.First().Value.DirectionDict.First().Value.Frames.First()].bitmap;
-                                if (bmp.Width > bmp.Height)
-                                    iconBmp = bmp.ResizeImage(new Size(32, (int)Math.Round((float)bmp.Height / bmp.Width * 32.0)));
+                                if (bmp.width > bmp.height)
+                                    iconBmp = bmp.ResizeImage(32, (int)Math.Round((float)bmp.height / bmp.width * 32.0));
                                 else
-                                    iconBmp = bmp.ResizeImage(new Size((int)Math.Round((float)bmp.Width / bmp.Height * 32.0), 32));
+                                    iconBmp = bmp.ResizeImage((int)Math.Round((float)bmp.width / bmp.height * 32.0), 32);
                             }
                             catch
                             {
@@ -836,11 +840,14 @@ namespace CTFAK.Tools
                             break;
                     }
                 }
+                */
+
                 //Logger.Log($"Generating Icon: {item.name} - {item.ObjectType}");
                 if (CTFAKCore.parameters.Contains("-noicons"))
                 {
                     noicon = false;
-                    iconBmp = Resources.Active;
+                    //TODO: replace resource stuff
+                    //iconBmp = Resources.Active;
                 }
 
                 if (!noicon)
@@ -859,7 +866,7 @@ namespace CTFAK.Tools
                     var shdrData = newItem.Chunks.GetOrCreateChunk<ObjectShaderSettings>();
                     if (item.InkEffect != 1 && !CTFAKCore.parameters.Contains("-notrans"))
                         shdrData.Blend = item.blend;
-                    shdrData.RGBCoeff = Color.FromArgb(item.rgbCoeff.A, item.rgbCoeff.R, item.rgbCoeff.G, item.rgbCoeff.B);
+                    shdrData.RGBCoeff = new Rgba32(item.rgbCoeff.R, item.rgbCoeff.G, item.rgbCoeff.B, item.rgbCoeff.A);
 
                     try
                     {
@@ -867,7 +874,7 @@ namespace CTFAK.Tools
                         if (!game.header.OtherFlags["Direct3D8or11"] && !game.header.OtherFlags["Direct3D9or11"])
                         {
                             shdrData.Blend = (byte)(255 - item.blend);
-                            shdrData.RGBCoeff = Color.FromArgb(item.rgbCoeff.A, 255 - item.rgbCoeff.R, 255 - item.rgbCoeff.G, 255 - item.rgbCoeff.B);
+                            shdrData.RGBCoeff = new Rgba32(255 - item.rgbCoeff.R, 255 - item.rgbCoeff.G, 255 - item.rgbCoeff.B, item.rgbCoeff.A);
                         }
                     }
                     catch { }

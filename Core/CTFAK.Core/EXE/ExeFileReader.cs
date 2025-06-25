@@ -1,15 +1,13 @@
 ﻿using CTFAK.CCN;
 using CTFAK.EXE;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CTFAK.CCN.Chunks;
-using TsudaKageyu;
 using System.Runtime.CompilerServices;
 
 namespace CTFAK.FileReaders
@@ -26,6 +24,8 @@ namespace CTFAK.FileReaders
         {
             CTFAKCore.currentReader = this;
             Settings.gameType = Settings.GameType.NORMAL;
+            //TODO: add new icon handling code
+            /*
             var icoExt = new IconExtractor(gamePath);
             var icos = IconUtil.Split(icoExt.GetIcon(0));
             
@@ -62,6 +62,7 @@ namespace CTFAK.FileReaders
             // 32-Bit 256x256
             if (!Icons.ContainsKey(256))
                 Icons.Add(256, Icons.Last().Value.ResizeImage(new Size(256, 256)));
+            */
 
 
             var reader = new ByteReader(gamePath, System.IO.FileMode.Open);

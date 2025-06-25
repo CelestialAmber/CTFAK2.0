@@ -3,10 +3,9 @@ using CTFAK.CCN.Chunks.Banks;
 using CTFAK.CCN.Chunks.Frame;
 using CTFAK.CCN.Chunks.Objects;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -20,6 +19,7 @@ using CTFAK.Core.CCN.Chunks;
 using System.Reflection.Metadata.Ecma335;
 using CTFAK.Core.CCN.Chunks.Banks.ImageBank;
 using CTFAK.Core.CCN.Chunks.Banks.SoundBank;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.CCN
 {
@@ -254,7 +254,7 @@ namespace CTFAK.CCN
                                 var r = chunkReader.ReadByte();
                                 var g = chunkReader.ReadByte();
                                 var b = chunkReader.ReadByte();
-                                newObject.rgbCoeff = Color.FromArgb(0, b, g, r);
+                                newObject.rgbCoeff = new Rgba32(b, g, r, 0);
                                 newObject.blend = chunkReader.ReadByte();
                             }
                             else

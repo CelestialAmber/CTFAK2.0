@@ -1,6 +1,5 @@
 ﻿using CTFAK.Core.Utils;
 using CTFAK.Memory;
-using CTFAK.Utils;
 using System;
 using System.Threading.Tasks;
 

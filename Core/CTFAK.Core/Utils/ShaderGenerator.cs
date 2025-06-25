@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using CTFAK.MMFParser.EXE.Loaders;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.Core.Utils
 {

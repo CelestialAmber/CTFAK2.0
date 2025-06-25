@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.CCN.Chunks.Objects
 {
@@ -86,12 +86,12 @@ namespace CTFAK.CCN.Chunks.Objects
     public class Shape : ChunkLoader
     {
         public short BorderSize;
-        public Color BorderColor;
+        public Rgba32 BorderColor;
         public short ShapeType;
         public short FillType;
         public short LineFlags;
-        public Color Color1;
-        public Color Color2;
+        public Rgba32 Color1;
+        public Rgba32 Color2;
         public short GradFlags;
         public short Image = 15;
 

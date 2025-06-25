@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using CTFAK.CCN;
 using CTFAK.CCN.Chunks.Banks;
 using CTFAK.FileReaders;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using System.Collections.Generic;
 
 namespace CTFAK.EXE
 {
-    public class CCNFileReader:IFileReader
+    public class CCNFileReader : IFileReader
     {
         public string Name => "CCN";
         public GameData game;

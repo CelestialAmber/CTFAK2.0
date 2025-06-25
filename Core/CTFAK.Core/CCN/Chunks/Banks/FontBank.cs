@@ -1,9 +1,8 @@
 ﻿using CTFAK.Memory;
 using CTFAK.MFA;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;

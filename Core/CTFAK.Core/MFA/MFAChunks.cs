@@ -2,15 +2,16 @@
 using CTFAK.CCN.Chunks.Frame;
 using CTFAK.Memory;
 using CTFAK.MMFParser.EXE.Loaders;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp.PixelFormats;
 using static CTFAK.CCN.Chunks.Objects.ObjectInfo;
+using SixLabors.ImageSharp;
 
 namespace CTFAK.MFA
 {
@@ -243,7 +244,7 @@ namespace CTFAK.MFA
             }
         }
 
-        public Color RGBCoeff;
+        public Rgba32 RGBCoeff;
         public byte Blend;
         public int HeaderID = 0;
         public int InkEffect;
@@ -255,7 +256,7 @@ namespace CTFAK.MFA
             var g = reader.ReadByte();
             var r = reader.ReadByte();
             Blend = reader.ReadByte();
-            RGBCoeff = Color.FromArgb(Blend, r, g, b);
+            RGBCoeff = new Rgba32(r, g, b, Blend);
 
             var numShaders = reader.ReadInt32();
             for (int i = 0; i < numShaders; i++)
@@ -364,7 +365,7 @@ namespace CTFAK.MFA
             }
         }
 
-        public Color RGBCoeff;
+        public Rgba32 RGBCoeff;
         public byte Blend;
         public int HeaderID = 0;
         public int Effect;
@@ -376,7 +377,7 @@ namespace CTFAK.MFA
             var g = reader.ReadByte();
             var r = reader.ReadByte();
             Blend = reader.ReadByte();
-            RGBCoeff = Color.FromArgb(Blend, r, g, b);
+            RGBCoeff = new Rgba32(r, g, b, Blend);
 
             var numShaders = reader.ReadInt32();
             for (int i = 0; i < numShaders; i++)
@@ -483,7 +484,7 @@ namespace CTFAK.MFA
         public class MFALayerShader : MFAChunkLoader
         {
             public int InkInMyBum = 0;
-            public Color RGBCoeff = Color.White;
+            public Rgba32 RGBCoeff = Color.White;
             public List<MFAShader> Shaders = new();
 
             public override void Read(ByteReader reader)

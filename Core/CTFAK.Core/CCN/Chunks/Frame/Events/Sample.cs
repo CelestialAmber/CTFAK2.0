@@ -1,6 +1,6 @@
 ﻿using CTFAK.Core.CCN.Chunks.Banks.SoundBank;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.MMFParser.EXE.Loaders.Events.Parameters
 {

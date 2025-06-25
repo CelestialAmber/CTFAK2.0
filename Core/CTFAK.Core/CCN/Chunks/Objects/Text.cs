@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Xml.Schema;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.CCN.Chunks.Objects
 {
@@ -79,7 +79,7 @@ namespace CTFAK.CCN.Chunks.Objects
             "Correct",
             "Relief"});
         public string Value;
-        public Color Color;
+        public Rgba32 Color;
 
 
 

@@ -1,7 +1,7 @@
 ﻿using CTFAK.Memory;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ namespace CTFAK.CCN.Chunks.Frame
         public string Name;
         public int Duration;
         public int Flags;
-        public Color Color;
+        public Rgba32 Color;
         public string ModuleFile;
         public byte[] ParameterData;
 

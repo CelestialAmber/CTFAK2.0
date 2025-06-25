@@ -1,7 +1,7 @@
 ﻿using CTFAK.Memory;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace CTFAK.Utils
+namespace CTFAK.Core.Utils
 {
     public static class Utils
     {
@@ -31,32 +31,7 @@ namespace CTFAK.Utils
             Array.Resize(ref buf, (int)writer.Size());
             return buf;
         }
-        public static Bitmap ResizeImage(this Bitmap imgToResize, int size) => ResizeImage(imgToResize, size, size);
-        public static Bitmap ResizeImage(this Bitmap imgToResize, int width, int height) => ResizeImage(imgToResize, new Size(width, height));
-        public static Bitmap ResizeImage(this Bitmap imgToResize, Size size)
-        {
-            var destRect = new Rectangle(0, 0, size.Width, size.Height);
-            var destImage = new Bitmap(size.Width, size.Height);
 
-            destImage.SetResolution(imgToResize.Width, imgToResize.Height);
-
-            using (var graphics = Graphics.FromImage(destImage))
-            {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(imgToResize, destRect, 0, 0, imgToResize.Width, imgToResize.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-            }
-
-            return destImage;
-        }
         public static string ReplaceFirst(this string text, string search, string replace)
         {
             int pos = text.IndexOf(search);

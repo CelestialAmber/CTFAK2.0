@@ -3,11 +3,11 @@ using CTFAK.CCN.Chunks.Banks;
 using CTFAK.Core.CCN.Chunks.Banks.SoundBank;
 using CTFAK.Memory;
 using CTFAK.MMFParser.MFA.Loaders;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 
 
@@ -51,7 +51,7 @@ namespace CTFAK.MFA
 
         public MFAValueList GlobalValues;
         public MFAValueList GlobalStrings;
-        public Color BorderColor;
+        public Rgba32 BorderColor;
 
         public BitDict DisplayFlags = new BitDict(new string[]
         {

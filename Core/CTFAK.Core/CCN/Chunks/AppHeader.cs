@@ -1,11 +1,11 @@
 ﻿using CTFAK.Memory;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CTFAK.CCN.Chunks
 {
@@ -76,7 +76,7 @@ namespace CTFAK.CCN.Chunks
             "Direct3D8or11"
         });
 
-        public Color BorderColor;
+        public Rgba32 BorderColor;
         public int FrameRate;
         public short GraphicsMode;
         public Controls Controls;

@@ -1,6 +1,6 @@
-﻿using CTFAK.Utils;
+﻿using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Text;
 
@@ -100,7 +100,7 @@ namespace CTFAK.Memory
             if (appendZero) WriteInt16(0);
         }
 
-        public void WriteColor(Color color)
+        public void WriteColor(Rgba32 color)
         {
             WriteInt8(color.R);
             WriteInt8(color.G);

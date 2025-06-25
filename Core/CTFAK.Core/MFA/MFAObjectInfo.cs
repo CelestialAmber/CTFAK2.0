@@ -1,7 +1,7 @@
 ﻿using CTFAK.CCN.Chunks;
 using CTFAK.Memory;
 using CTFAK.MFA.MFAObjectLoaders;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;

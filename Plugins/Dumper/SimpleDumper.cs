@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using CTFAK.Memory;
 using System.Runtime.Intrinsics.X86;
 using System.Text.RegularExpressions;
@@ -54,7 +54,7 @@ namespace Dumper
                 var newTask = new Task(() =>
                 {
                     var bmp = image.bitmap;
-                    bmp.Save($"Dumps\\{outPath}\\Images\\{image.Handle}.png");
+                    bmp.SaveToPng($"Dumps\\{outPath}\\Images\\{image.Handle}.png");
                 });
                 tasks[i] = newTask;
                 newTask.Start();

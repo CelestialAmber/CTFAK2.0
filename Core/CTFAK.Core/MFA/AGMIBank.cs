@@ -1,8 +1,8 @@
 ﻿using CTFAK.CCN.Chunks;
 using CTFAK.Core.CCN.Chunks.Banks.ImageBank;
 using CTFAK.Memory;
+using SixLabors.ImageSharp.PixelFormats;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +17,7 @@ namespace CTFAK.MMFParser.MFA.Loaders
         private readonly List<Task> _imageWriteTasks = new();
         private int _graphicMode;
         public Dictionary<int, FusionImage> Items = new();
-        public List<Color> Palette = new Color[256].ToList();
+        public List<Rgba32> Palette = new Rgba32[256].ToList();
         private int _paletteEntries;
         private int _paletteVersion;
         public event SaveHandler OnImageLoaded;
@@ -27,7 +27,7 @@ namespace CTFAK.MMFParser.MFA.Loaders
             _graphicMode = reader.ReadInt32();
             _paletteVersion = reader.ReadInt16();
             _paletteEntries = reader.ReadInt16();
-            Palette = new List<Color>();
+            Palette = new List<Rgba32>();
             for (var i = 0; i < _paletteEntries; i++) Palette.Add(reader.ReadColor());
 
             var count = reader.ReadInt32();

@@ -1,10 +1,10 @@
 ﻿using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 using K4os.Compression.LZ4;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp;
 
 namespace CTFAK.Core.CCN.Chunks.Banks.ImageBank
 {

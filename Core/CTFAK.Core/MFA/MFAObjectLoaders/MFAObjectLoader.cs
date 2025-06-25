@@ -1,8 +1,8 @@
 ﻿using CTFAK.CCN.Chunks;
 using CTFAK.Memory;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace CTFAK.MFA.MFAObjectLoaders
     {
         public int ObjectFlags;
         public int NewObjectFlags;
-        public Color BackgroundColor;
+        public Rgba32 BackgroundColor;
         public short[] Qualifiers = new short[8];
         public MFAValueList Values;
         public MFAValueList Strings;

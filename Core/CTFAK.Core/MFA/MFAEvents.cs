@@ -4,7 +4,7 @@ using System.IO;
 using CTFAK.CCN.Chunks;
 using CTFAK.CCN.Chunks.Frame;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.MFA
 {

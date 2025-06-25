@@ -1,8 +1,8 @@
 ﻿using CTFAK.CCN.Chunks;
 using CTFAK.Memory;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,10 +34,10 @@ namespace CTFAK.MFA.MFAObjectLoaders
         public int Height;
         public int Shape;
         public int BorderSize;
-        public Color BorderColor;
+        public Rgba32 BorderColor;
         public int FillType;
-        public Color Color1;
-        public Color Color2;
+        public Rgba32 Color1;
+        public Rgba32 Color2;
         public int Flags;
         public int Image;
 

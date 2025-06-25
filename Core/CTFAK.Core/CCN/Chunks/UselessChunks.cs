@@ -1,16 +1,16 @@
 ﻿using CTFAK.CCN.Chunks;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace CTFAK.Core.CCN.Chunks
 {
     public class AppIcon
     {
         public static Bitmap Icon;
-        public static List<Color> Palette;
+        public static List<Rgba32> Palette;
 
         public static Bitmap ReadIcon(ByteReader reader)
         {
@@ -22,31 +22,31 @@ namespace CTFAK.Core.CCN.Chunks
                 var g = reader.ReadByte();
                 var r = reader.ReadByte();
                 var a = reader.ReadByte();
-                var newColor = Color.FromArgb(255, r, g, b);
+                var newColor = new Rgba32(r, g, b, 255);
                 Palette.Add(newColor);
             }
 
             Icon = new Bitmap(16, 16);
 
-            for (int h = 0; h < Icon.Height; h++)
-                for (int w = 0; w < Icon.Width; w++)
-                    Icon.SetPixel(w, Icon.Width - 1 - h, Palette[reader.ReadByte()]);
+            for (int h = 0; h < Icon.height; h++)
+                for (int w = 0; w < Icon.width; w++)
+                    Icon.SetPixel(w, Icon.width - 1 - h, Palette[reader.ReadByte()]);
 
-            var BitmapSize = Icon.Width * Icon.Height;
-            for (int y = 0; y < Icon.Height; ++y)
-                for (int x = 0; x < Icon.Width; x += 8)
+            var BitmapSize = Icon.width * Icon.height;
+            for (int y = 0; y < Icon.height; ++y)
+                for (int x = 0; x < Icon.width; x += 8)
                 {
                     byte Mask = reader.ReadByte();
                     for (int i = 0; i < 8; ++i)
                         if ((1 & (Mask >> (7 - i))) != 0)
                         {
-                            Color get = Icon.GetPixel(x + i, y);
-                            Icon.SetPixel(x + i, y, Color.FromArgb(0, get.R, get.G, get.B));
+                            Rgba32 get = Icon.GetPixel(x + i, y);
+                            Icon.SetPixel(x + i, y, new Rgba32(get.R, get.G, get.B, 0));
                         }
                         else
                         {
-                            Color get = Icon.GetPixel(x + i, y);
-                            Icon.SetPixel(x + i, y, Color.FromArgb(255, get.R, get.G, get.B));
+                            Rgba32 get = Icon.GetPixel(x + i, y);
+                            Icon.SetPixel(x + i, y, new Rgba32(get.R, get.G, get.B, 255));
                         }
                 }
             return Icon;

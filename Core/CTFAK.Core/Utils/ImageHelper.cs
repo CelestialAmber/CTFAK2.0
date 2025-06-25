@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace CTFAK.Utils
+namespace CTFAK.Core.Utils
 {
     public static class ImageHelper
     {
@@ -171,23 +169,15 @@ namespace CTFAK.Utils
                     position += pad * 2;
                 }
             }
-            else if (mode == 5)
-                return (Bitmap)Bitmap.FromStream(new MemoryStream(imageData));
+            //else if (mode == 5)
+            //    return (Bitmap)Bitmap.FromStream(new MemoryStream(imageData));
             else Console.WriteLine("BROKEN COLOR MODE " + mode);
 
 
-            var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            var bmp = new Bitmap(width, height);
 
-            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0,
-                                 bmp.Width,
-                                 bmp.Height),
-                                 ImageLockMode.WriteOnly,
-                                 bmp.PixelFormat);
+            bmp.CopyColorDataFromArray(colorArray);
 
-            var pNative = bmpData.Scan0;
-            Marshal.Copy(colorArray, 0, pNative, colorArray.Length);
-
-            bmp.UnlockBits(bmpData);
             return bmp;
         }
     }

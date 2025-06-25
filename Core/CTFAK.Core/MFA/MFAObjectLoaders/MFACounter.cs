@@ -1,7 +1,7 @@
 ﻿using CTFAK.Memory;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +15,9 @@ namespace CTFAK.MFA.MFAObjectLoaders
         public int Maximum;
         public uint DisplayType;
         public uint CountFlags;
-        public Color Color1;
+        public Rgba32 Color1;
         public uint VerticalGradient;
-        public Color Color2;
+        public Rgba32 Color2;
         public int CountType;
         public int Width;
         public int Height;

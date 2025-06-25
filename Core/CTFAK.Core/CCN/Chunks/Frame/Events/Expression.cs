@@ -3,7 +3,7 @@ using System.IO;
 using CTFAK.CCN;
 using CTFAK.CCN.Chunks;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.MMFParser.EXE.Loaders.Events.Expressions
 {

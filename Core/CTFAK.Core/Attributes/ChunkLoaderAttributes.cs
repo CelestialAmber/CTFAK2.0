@@ -1,5 +1,5 @@
 ﻿using System;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 namespace CTFAK.Attributes
 {

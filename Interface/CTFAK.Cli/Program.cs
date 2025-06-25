@@ -9,7 +9,7 @@ using CTFAK;
 using CTFAK.EXE;
 using CTFAK.FileReaders;
 using CTFAK.Tools;
-using CTFAK.Utils;
+using CTFAK.Core.Utils;
 
 public class Program
 {

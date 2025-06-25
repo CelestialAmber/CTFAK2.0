@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace CTFAK.Utils
+namespace CTFAK.Core.Utils
 {
     public static class Logger
     {
